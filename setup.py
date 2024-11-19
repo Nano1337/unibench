@@ -59,6 +59,7 @@ setuptools.setup(
         "latextable",
         "gdown",
         "openai-clip",
+        "setuptools",
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
