@@ -96,7 +96,6 @@ def download_only_aggregate(output_dir):
         repo_id="haideraltahan/unibench",
         cache_dir=output_dir,
         local_dir=output_dir,
-        local_dir_use_symlinks=False,
         repo_type="dataset",
         filename="aggregate.f",
     )
@@ -107,6 +106,5 @@ def download_all_results(output_dir):
         repo_id="haideraltahan/unibench",
         cache_dir=output_dir,
         local_dir=output_dir,
-        local_dir_use_symlinks=False,
         repo_type="dataset",
     )

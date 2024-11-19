@@ -27,6 +27,7 @@ eval = Evaluator(
 )
 
 eval.add_model(model=model)
-eval.update_benchmark_list(["imagenet1k"])
+# eval.update_benchmark_list(["imagenet1k"])
+eval.update_benchmark_list("all")
 eval.update_model_list(["vitamin_l_comp1b"])
 eval.evaluate()

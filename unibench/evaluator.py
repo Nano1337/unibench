@@ -183,6 +183,7 @@ class Evaluator(object):
         setattr(benchmarks_module, benchmark_name, temp_func)
         self.benchmarks.append(benchmark_name)
 
+    # TODO: get rid of this
     def generate_aggregate_results(self):
         self.outputhandler.load_all_csv(self.models, self.benchmarks)
         self.outputhandler.generate_aggregate_results()
@@ -214,6 +215,7 @@ class Evaluator(object):
         setattr(models_module, model_name, temp_func)
         self.models.append(model_name)
 
+    # TODO: get rid of this
     def show_results(self):
         Console().print(
             df_to_table(
@@ -267,11 +269,13 @@ class Evaluator(object):
                         pg_benchmarks,
                         description=f"[green]Processing {benchmark_name}...",
                     )
-
+                    
+                    # this checks if eval had already been computed for this model and benchmark
                     number_entries = self.outputhandler.check_if_computed(
                         model_name=model_name, benchmark_name=benchmark_name
                     )
 
+                    # if eval had already been computed, skip to the next benchmark
                     if number_entries == True:
                         progress.update(pg_benchmarks, advance=1, refresh=True)
                         continue

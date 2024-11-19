@@ -19,7 +19,6 @@ class HuggingFaceDataset(Dataset):
             filename=filename,
             repo_type="dataset",
             local_dir=dir,
-            local_dir_use_symlinks=False,
         )
 
         res = []
@@ -137,7 +136,7 @@ class HuggingFaceDataset(Dataset):
                 samples,
                 target,
                 str(item["__key__"]),
-                item["split.txt"].decode("utf-8"),
+                item["split.txt"] if isinstance(item["split.txt"], str) else item["split.txt"].decode("utf-8"),
             )
 
         return samples, target, str(item["__key__"])
