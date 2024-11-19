@@ -10,3 +10,7 @@ uv venv --python 3.10.12
 uv pip install -e .
 ```
 
+### Important Files
+
+You can find an example of running the evaluation in `eval.py`. 
+All the benchmarks are defined in `unibench/benchmarks_zoo/benchmarks.py`. The `

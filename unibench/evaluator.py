@@ -288,7 +288,6 @@ class Evaluator(object):
                         raise ValueError(
                             f"{model_name} does not exist in the currently supported models"
                         )
-
                     dh = load_benchmark(
                         benchmark_name,
                         transform=model.get_preprocess_transforms(),
