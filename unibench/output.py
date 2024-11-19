@@ -18,6 +18,7 @@ from .benchmarks_zoo.registry import get_benchmark_info, list_benchmarks
 
 from .common_utils.constants import OUTPUT_DIR, LOCK_DIR
 
+from sklearn.metrics import balanced_accuracy_score
 
 class OutputHandler(object):
     def __init__(
@@ -113,6 +114,27 @@ class OutputHandler(object):
 
         self._model_csv = pd.concat(dfs).reset_index(drop=True).round(self.round_values)
 
+
+    def _get_cls_metrics(self, df): 
+        # drop columns we don't need for this analysis
+        df = df.drop(columns=["model_name", "entropy", "benchmark_name", "split", "predictions_top5", "confidence", "image_name"])
+
+        # calculate correctness at top1 and top5
+        acc1 = df["correctness"].mean()
+        acc5 = df["correctness_top5"].mean()
+
+        # calculate mean per class recall
+        target = df["image_class"].values
+        preds = df["predictions"].values
+        mean_per_class_recall = balanced_accuracy_score(target, preds)
+
+        metrics = {
+            "acc1": acc1,
+            "acc5": acc5,
+            "mean_per_class_recall": mean_per_class_recall,
+        }
+        return metrics
+
     def load_model_csvs_and_calculate(self, model_name, use_cols=None):
         # NOTE: after we get this one working, instead of saving the .f file, we can directly save/concat the jsonl with lockutils
         model_folder = self.output_dir.joinpath(model_name)
@@ -122,34 +144,15 @@ class OutputHandler(object):
         for file in os.listdir(model_folder):
             if file.endswith(".f"):
                 df = pd.read_feather(model_folder.joinpath(file), columns=use_cols)
-
-                if None: 
-                    # TODO: implement for non-classification (or usual) benchmarks. 
-                    # Example: /fsx/users/amro/projects/openclip_projects/science/outputs/openclip/BP_CLIP-B-32_DC_raw_pool-256m_cls-optimized_size-47m_compute-128m_seed0/eval_results/epoch_0_step_8784
-                    pass
-                else: 
-                    # drop columns we don't need for this analysis
-                    benchmark_name = df["benchmark_name"].iloc[0]
-                    print(f"Processing {model_name} on {benchmark_name}")
-                    df = df.drop(columns=["model_name", "entropy", "benchmark_name", "split", "predictions_top5", "confidence", "image_name"])
-
-                    # calculate correctness at top1 and top5
-                    acc1 = df["correctness"].mean()
-                    acc5 = df["correctness_top5"].mean()
-                    print(f"acc1: {acc1:.4f}, acc5: {acc5:.4f}")
-
-                    # calculate mean per class recall
-                    recalls = []
-                    for class_name in df["image_class"].unique():
-                        class_mask = df["image_class"] == class_name
-                        class_df = df[class_mask]
-                        if len(class_df) > 0:  # avoid division by zero
-                            class_recall = class_df["correctness"].mean()
-                            recalls.append(class_recall)
-                    
-                    mean_per_class_recall = sum(recalls) / len(recalls)
-                    print(f"mean per class recall: {mean_per_class_recall:.4f}")
-                    exit()
+                benchmark_name = df["benchmark_name"].iloc[0]
+                # if None: 
+                #     # TODO: implement for non-classification (or unusual) benchmarks. 
+                #     # Example: /fsx/users/amro/projects/openclip_projects/science/outputs/openclip/BP_CLIP-B-32_DC_raw_pool-256m_cls-optimized_size-47m_compute-128m_seed0/eval_results/epoch_0_step_8784
+                #     pass
+                # else: 
+                metrics = self._get_cls_metrics(df)
+                print(f"{model_name} on {benchmark_name}: {metrics}")
+                exit()
     
         self._model_csv = pd.concat(dfs).reset_index(drop=True).round(self.round_values)
 
