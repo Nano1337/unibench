@@ -14,7 +14,7 @@ import torch
 from unibench.common_utils.utils import download_all_results, download_only_aggregate
 from oslo_concurrency import lockutils
 
-from .benchmarks_zoo.registry import get_benchmark_info, list_benchmarks
+from .benchmarks_zoo.registry import get_benchmark_info, list_benchmarks, get_benchmark_types
 
 from .common_utils.constants import OUTPUT_DIR, LOCK_DIR
 
@@ -144,15 +144,20 @@ class OutputHandler(object):
         for file in os.listdir(model_folder):
             if file.endswith(".f"):
                 df = pd.read_feather(model_folder.joinpath(file), columns=use_cols)
-                benchmark_name = df["benchmark_name"].iloc[0]
+                benchmark_name = df["benchmark_name"].iloc[0] # note that the names here are the "key" names, not the "dataset" display
+                print(benchmark_name)
+                print(get_benchmark_info("blogpost_vtab"))
+                print(get_benchmark_types())
+                exit()
+                # TODO: figure out how to use specified dataset groups
                 # if None: 
                 #     # TODO: implement for non-classification (or unusual) benchmarks. 
                 #     # Example: /fsx/users/amro/projects/openclip_projects/science/outputs/openclip/BP_CLIP-B-32_DC_raw_pool-256m_cls-optimized_size-47m_compute-128m_seed0/eval_results/epoch_0_step_8784
-                #     pass
+                #     passs
                 # else: 
-                metrics = self._get_cls_metrics(df)
-                print(f"{model_name} on {benchmark_name}: {metrics}")
-                exit()
+                # metrics = self._get_cls_metrics(df)
+                # print(f"{model_name} on {benchmark_name}: {metrics}")
+        exit()
     
         self._model_csv = pd.concat(dfs).reset_index(drop=True).round(self.round_values)
 

@@ -59,7 +59,7 @@ def imagenet1k(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "object recognition",
@@ -159,7 +159,7 @@ def fgvc_aircraft(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "object recognition",
@@ -184,7 +184,7 @@ def pets(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "texture",
@@ -234,7 +234,7 @@ def sun397(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "object recognition",
@@ -689,7 +689,7 @@ def stl10(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "object recognition",
@@ -714,7 +714,7 @@ def svhn(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "non-natural images",
@@ -914,7 +914,7 @@ def imagenetr(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "non-natural images",
@@ -1014,7 +1014,7 @@ def imagenetc(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "object recognition",
@@ -1139,7 +1139,7 @@ def places365(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "reasoning",
@@ -1166,7 +1166,7 @@ def clevr_distance(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "reasoning",
@@ -1264,7 +1264,7 @@ def voc2007(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "non-natural images",
@@ -1316,7 +1316,7 @@ def dspr_orientation(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "blogpost_vtab"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "reasoning",
@@ -1424,7 +1424,7 @@ def dspr_x_position(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "transfer",
+    "vtab",
     {
         "benchmark": "zero-shot",
         "benchmark_type": "reasoning",
@@ -1526,7 +1526,7 @@ def vg_relation(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "relation",
+    ["relation", "blogpost_retrieval"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
@@ -1549,7 +1549,7 @@ def flickr30k_order(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "relation",
+    ["relation", "blogpost_sugarcrepe"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
@@ -1618,7 +1618,7 @@ def vg_attribution(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "relation",
+    ["relation", "blogpost_retrieval"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
