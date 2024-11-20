@@ -1503,7 +1503,7 @@ def dollar_street(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "relation",
+    ["relation", "other"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
@@ -1572,7 +1572,7 @@ def sugarcrepe(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "relation",
+    ["relation", "other"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
@@ -1595,7 +1595,7 @@ def winoground(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "relation",
+    ["relation", "other"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",

@@ -150,11 +150,17 @@ class OutputHandler(object):
     def _get_other_metrics(self, df, benchmark_name):
         if benchmark_name == "countbench":
             return {"acc1": df["correctness"].mean(), "main_metric": df["correctness"].mean()}
+        elif benchmark_name == "vg_relation":
+            return {"acc1": df["correctness"].mean(), "main_metric": df["correctness"].mean()}
+        elif benchmark_name == "winoground":
+            return {"text_acc": df["text_correctness"].mean(), "image_acc": df["image_correctness"].mean(), "main_metric": df["text_correctness"].mean()}
+        elif benchmark_name == "vg_attribution":
+            return {"acc1": df["correctness"].mean(), "main_metric": df["correctness"].mean()}
         else:
             raise ValueError(f"Unknown benchmark: {benchmark_name}")
 
     def load_model_csvs_and_calculate(self, model_name, use_cols=None):
-        # NOTE: after we get this one working, instead of saving the .f file, we can directly save/concat the jsonl with lockutils
+        # TODO 2: after we get this one working, instead of saving the .f file, we can directly save/concat the jsonl with lockutils
         model_folder = self.output_dir.joinpath(model_name)
 
         self._model_csv = pd.DataFrame()
@@ -203,7 +209,7 @@ class OutputHandler(object):
                             "metrics": metrics,
                         })
                     else:
-                        # TODO: need to go through all evals
+                        # TODO 1: test this on all evals once finished
                         metrics = self._get_cls_metrics(df)
                 except Exception as e: 
                     print(f"Error processing {benchmark_name}: {e}")
