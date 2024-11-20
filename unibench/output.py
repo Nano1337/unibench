@@ -1,10 +1,3 @@
-"""
-Copyright (c) Meta Platforms, Inc. and affiliates.
-All rights reserved.
-This source code is licensed under the license found in the
-LICENSE file in the root directory of this source tree.
-"""
-
 import os.path
 from pathlib import Path
 
@@ -19,6 +12,11 @@ from .benchmarks_zoo.registry import get_benchmark_info, list_benchmarks, get_be
 from .common_utils.constants import OUTPUT_DIR, LOCK_DIR
 
 from sklearn.metrics import balanced_accuracy_score
+
+import warnings
+
+import json
+
 
 class OutputHandler(object):
     def __init__(
@@ -123,17 +121,37 @@ class OutputHandler(object):
         acc1 = df["correctness"].mean()
         acc5 = df["correctness_top5"].mean()
 
-        # calculate mean per class recall
+        # calculate mean per class recall - convert warning to exception
         target = df["image_class"].values
         preds = df["predictions"].values
-        mean_per_class_recall = balanced_accuracy_score(target, preds)
-
+        
+        # Suppress the warning and calculate balanced accuracy
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', message='y_pred contains classes not in y_true')
+            mean_per_class_recall = balanced_accuracy_score(target, preds)
+        
         metrics = {
             "acc1": acc1,
             "acc5": acc5,
             "mean_per_class_recall": mean_per_class_recall,
+            "main_metric": acc1,
         }
         return metrics
+    
+    def _get_order_retrieval_metrics(self, df):
+        mean_acc = df["correctness"].mean()
+        return {"acc1": mean_acc, "main_metric": mean_acc}   
+
+    def _get_sugarcrepe_metrics(self, df):
+        # Calculate mean accuracy per attribute
+        metrics = df.groupby("attribute")["correctness"].mean().to_dict()
+        return metrics
+    
+    def _get_other_metrics(self, df, benchmark_name):
+        if benchmark_name == "countbench":
+            return {"acc1": df["correctness"].mean(), "main_metric": df["correctness"].mean()}
+        else:
+            raise ValueError(f"Unknown benchmark: {benchmark_name}")
 
     def load_model_csvs_and_calculate(self, model_name, use_cols=None):
         # NOTE: after we get this one working, instead of saving the .f file, we can directly save/concat the jsonl with lockutils
@@ -141,25 +159,62 @@ class OutputHandler(object):
 
         self._model_csv = pd.DataFrame()
         dfs = []
+        vtab_group = list_benchmarks("blogpost_vtab")
+        order_retrieval_group = list_benchmarks("order_retrieval") # FIXME: will need to manually align this
+        sugarcrepe_group = list_benchmarks("blogpost_sugarcrepe")
+        other_group = list_benchmarks("other") # requires special processing
+        # wilds_group = list_benchmarks("wilds") # TODO: wilds evals don't exist yet, needs to be implemented
+        # may need other groups depending on what metrics there are in the df
+
+        # NOTE, example: /fsx/users/amro/projects/openclip_projects/science/outputs/openclip/BP_CLIP-B-32_DC_raw_pool-256m_cls-optimized_size-47m_compute-128m_seed0/eval_results/epoch_0_step_8784
+        data = []
         for file in os.listdir(model_folder):
             if file.endswith(".f"):
                 df = pd.read_feather(model_folder.joinpath(file), columns=use_cols)
                 benchmark_name = df["benchmark_name"].iloc[0] # note that the names here are the "key" names, not the "dataset" display
-                print(benchmark_name)
-                print(get_benchmark_info("blogpost_vtab"))
-                print(get_benchmark_types())
-                exit()
-                # TODO: figure out how to use specified dataset groups
-                # if None: 
-                #     # TODO: implement for non-classification (or unusual) benchmarks. 
-                #     # Example: /fsx/users/amro/projects/openclip_projects/science/outputs/openclip/BP_CLIP-B-32_DC_raw_pool-256m_cls-optimized_size-47m_compute-128m_seed0/eval_results/epoch_0_step_8784
-                #     passs
-                # else: 
-                # metrics = self._get_cls_metrics(df)
-                # print(f"{model_name} on {benchmark_name}: {metrics}")
-        exit()
-    
-        self._model_csv = pd.concat(dfs).reset_index(drop=True).round(self.round_values)
+                try: 
+                    if benchmark_name in vtab_group:
+                        metrics = self._get_cls_metrics(df)
+                        data.append({
+                            "key": f"vtab/{benchmark_name}",
+                            "dataset": benchmark_name,
+                            "metrics": metrics,
+                        })
+                    elif benchmark_name in order_retrieval_group:
+                        metrics = self._get_order_retrieval_metrics(df)
+                        data.append({
+                            "key": benchmark_name,
+                            "dataset": benchmark_name,
+                            "metrics": metrics,
+                        })
+                    elif benchmark_name in sugarcrepe_group:
+                        metrics = self._get_sugarcrepe_metrics(df)
+                        for k, v in metrics.items():
+                            data.append({
+                                "key": f"sugar_crepe/{k}",
+                                "dataset": f"sugar_crepe_{k}",
+                                "metrics": {"acc": metrics[k], "main_metric": metrics[k]},
+                            })
+                    elif benchmark_name in other_group:
+                        metrics = self._get_other_metrics(df, benchmark_name)
+                        data.append({
+                            "key": benchmark_name,
+                            "dataset": benchmark_name,
+                            "metrics": metrics,
+                        })
+                    else:
+                        # TODO: need to go through all evals
+                        metrics = self._get_cls_metrics(df)
+                except Exception as e: 
+                    print(f"Error processing {benchmark_name}: {e}")
+                    exit()
+
+        # Writing to a JSONL file
+        with open(f"{model_name}_eval_results.jsonl", 'w') as f:
+            for item in data:
+                # Write each dictionary as a JSON line
+                json_line = json.dumps(item)
+                f.write(json_line + '\n')
 
     def get_csv(self):
         return pd.concat([self._local_csv, self._model_csv])
@@ -236,7 +291,7 @@ class OutputHandler(object):
             .mean()
             .reset_index()
         )
-
+        
         df = (
             pd.concat([self._aggregate, df])
             .drop_duplicates(subset=["model_name", "benchmark_name"], keep="last")

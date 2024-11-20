@@ -1191,7 +1191,7 @@ def clevr_count(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    "vtab",
+    ["vtab", "other"],
     {
         "benchmark": "zero-shot",
         "benchmark_type": "reasoning",
@@ -1526,7 +1526,7 @@ def vg_relation(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    ["relation", "blogpost_retrieval"],
+    ["relation", "order_retrieval"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
@@ -1618,7 +1618,7 @@ def vg_attribution(benchmark_name, transform=None, **kwargs):
 
 
 @register_benchmark(
-    ["relation", "blogpost_retrieval"],
+    ["relation", "order_retrieval"],
     {
         "benchmark": "relation",
         "benchmark_type": "relation",
