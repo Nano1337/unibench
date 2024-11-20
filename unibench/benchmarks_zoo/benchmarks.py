@@ -988,29 +988,29 @@ def imagenet9(benchmark_name, transform=None, **kwargs):
     )
 
 
-@register_benchmark(
-    "corruption",
-    {
-        "benchmark": "zero-shot",
-        "benchmark_type": "corruption",
-        "capability": "corruption",
-        "curated": True,
-        "object_centric": True,
-        "image_resolution": [224, 224],
-        "num_classes": 1000,
-        "llama2_ppi": 76188.02,
-    },
-)
-def imagenetc(benchmark_name, transform=None, **kwargs):
-    benchmark = HuggingFaceDataset(
-        transform=transform, dataset_url="haideraltahan/wds_imagenetc", **kwargs
-    )
-    return ZeroShotBenchmarkHandler(
-        benchmark_name=benchmark_name,
-        benchmark=benchmark,
-        classes=benchmark.classes,
-        templates=benchmark.templates,
-    )
+# @register_benchmark(
+#     "corruption",
+#     {
+#         "benchmark": "zero-shot",
+#         "benchmark_type": "corruption",
+#         "capability": "corruption",
+#         "curated": True,
+#         "object_centric": True,
+#         "image_resolution": [224, 224],
+#         "num_classes": 1000,
+#         "llama2_ppi": 76188.02,
+#     },
+# )
+# def imagenetc(benchmark_name, transform=None, **kwargs):
+#     benchmark = df -hHuggingFaceDataset(
+#         transform=transform, dataset_url="haideraltahan/wds_imagenetc", **kwargs
+#     )
+#     return ZeroShotBenchmarkHandler(
+#         benchmark_name=benchmark_name,
+#         benchmark=benchmark,
+#         classes=benchmark.classes,
+#         templates=benchmark.templates,
+#     )
 
 
 @register_benchmark(
