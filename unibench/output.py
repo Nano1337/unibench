@@ -159,7 +159,7 @@ class OutputHandler(object):
         else:
             raise ValueError(f"Unknown benchmark: {benchmark_name}")
 
-    def load_model_csvs_and_calculate(self, model_name, use_cols=None):
+    def write_eval_results(self, model_name, use_cols=None):
         # TODO 2: after we get this one working, instead of saving the .f file, we can directly save/concat the jsonl with lockutils
         model_folder = self.output_dir.joinpath(model_name)
 

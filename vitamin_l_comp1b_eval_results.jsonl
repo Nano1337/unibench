@@ -5,7 +5,9 @@
 {"key": "vtab/pets", "dataset": "pets", "metrics": {"acc1": 0.9555737258108477, "acc5": 0.9991823385118561, "mean_per_class_recall": 0.9551602126745677, "main_metric": 0.9555737258108477}}
 {"key": "vtab/resisc45", "dataset": "resisc45", "metrics": {"acc1": 0.7301587301587301, "acc5": 0.9755555555555555, "mean_per_class_recall": 0.7299490069490641, "main_metric": 0.7301587301587301}}
 {"key": "vtab/eurosat", "dataset": "eurosat", "metrics": {"acc1": 0.667037037037037, "acc5": 0.9785185185185186, "mean_per_class_recall": 0.6789265937385957, "main_metric": 0.667037037037037}}
+{"key": "vg_relation", "dataset": "vg_relation", "metrics": {"acc1": 0.47119522078790155, "main_metric": 0.47119522078790155}}
 {"key": "vtab/cifar100", "dataset": "cifar100", "metrics": {"acc1": 0.8799, "acc5": 0.9794, "mean_per_class_recall": 0.8798999999999999, "main_metric": 0.8799}}
+{"key": "vtab/svhn", "dataset": "svhn", "metrics": {"acc1": 0.645820528580209, "acc5": 0.9555931161647203, "mean_per_class_recall": 0.6759955163155877, "main_metric": 0.645820528580209}}
 {"key": "sugar_crepe/add_att", "dataset": "sugar_crepe_add_att", "metrics": {"acc": 0.8338150289017341, "main_metric": 0.8338150289017341}}
 {"key": "sugar_crepe/add_obj", "dataset": "sugar_crepe_add_obj", "metrics": {"acc": 0.8831231813773036, "main_metric": 0.8831231813773036}}
 {"key": "sugar_crepe/replace_att", "dataset": "sugar_crepe_replace_att", "metrics": {"acc": 0.8604060913705583, "main_metric": 0.8604060913705583}}
@@ -13,8 +15,10 @@
 {"key": "sugar_crepe/replace_rel", "dataset": "sugar_crepe_replace_rel", "metrics": {"acc": 0.6963015647226174, "main_metric": 0.6963015647226174}}
 {"key": "sugar_crepe/swap_att", "dataset": "sugar_crepe_swap_att", "metrics": {"acc": 0.6696696696696697, "main_metric": 0.6696696696696697}}
 {"key": "sugar_crepe/swap_obj", "dataset": "sugar_crepe_swap_obj", "metrics": {"acc": 0.6408163265306123, "main_metric": 0.6408163265306123}}
+{"key": "winoground", "dataset": "winoground", "metrics": {"text_acc": 0.3225, "image_acc": 0.11, "main_metric": 0.3225}}
 {"key": "vtab/flowers102", "dataset": "flowers102", "metrics": {"acc1": 0.8485932671979184, "acc5": 0.9331598633924215, "mean_per_class_recall": 0.8504507541681332, "main_metric": 0.8485932671979184}}
 {"key": "coco_order", "dataset": "coco_order", "metrics": {"acc1": 0.32578968412634945, "main_metric": 0.32578968412634945}}
+{"key": "vg_attribution", "dataset": "vg_attribution", "metrics": {"acc1": 0.5504730763879226, "main_metric": 0.5504730763879226}}
 {"key": "flickr30k_order", "dataset": "flickr30k_order", "metrics": {"acc1": 0.4096, "main_metric": 0.4096}}
 {"key": "countbench", "dataset": "countbench", "metrics": {"acc1": 0.5029239766081871, "main_metric": 0.5029239766081871}}
 {"key": "vtab/kitti_distance", "dataset": "kitti_distance", "metrics": {"acc1": 0.23628691983122363, "acc5": 1.0, "mean_per_class_recall": 0.18114008801707848, "main_metric": 0.23628691983122363}}
