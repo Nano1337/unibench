@@ -207,30 +207,30 @@ def dtd(benchmark_name, transform=None, **kwargs):
         templates=benchmark.templates,
     )
 
-
-@register_benchmark(
-    "vtab",
-    {
-        "benchmark": "zero-shot",
-        "benchmark_type": "object recognition",
-        "capability": "scene recognition",
-        "curated": False,
-        "object_centric": False,
-        "image_resolution": [958.89, 775.09],
-        "num_classes": 397,
-        "llama2_ppi": 117271.23,
-    },
-)
-def sun397(benchmark_name, transform=None, **kwargs):
-    benchmark = HuggingFaceDataset(
-        transform=transform, dataset_url="haideraltahan/wds_sun397", **kwargs
-    )
-    return ZeroShotBenchmarkHandler(
-        benchmark_name=benchmark_name,
-        benchmark=benchmark,
-        classes=benchmark.classes,
-        templates=benchmark.templates,
-    )
+# FIXME: need to figure out why the test set is so large (>100GB) when the datacomp version is only ~40GB
+# @register_benchmark(
+#     "vtab",
+#     {
+#         "benchmark": "zero-shot",
+#         "benchmark_type": "object recognition",
+#         "capability": "scene recognition",
+#         "curated": False,
+#         "object_centric": False,
+#         "image_resolution": [958.89, 775.09],
+#         "num_classes": 397,
+#         "llama2_ppi": 117271.23,
+#     },
+# )
+# def sun397(benchmark_name, transform=None, **kwargs):
+#     benchmark = HuggingFaceDataset(
+#         transform=transform, dataset_url="haideraltahan/wds_sun397", **kwargs
+#     )
+#     return ZeroShotBenchmarkHandler(
+#         benchmark_name=benchmark_name,
+#         benchmark=benchmark,
+#         classes=benchmark.classes,
+#         templates=benchmark.templates,
+#     )
 
 
 @register_benchmark(
